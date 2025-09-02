@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Yoga Alignment Guide</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:wght@400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Yoga Alignment Guide Logo">
+                <span>YOGA ALIGNMENT GUIDE</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('video.upload_video') }}">UPLOAD</a></li>
+                <li><a class="active" href="{{ url_for('video.uploaded_videos') }}">PROFILE</a></li>
+                <li><a href="{{ url_for('logout.logout') }}">LOGOUT</a></li>
+            </ul>
+            <div class="hamburger">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="profile-container">
+        <div class="profile-header">
+            <div class="profile-greeting">
+                <h2>My Profile</h2>
+                <h3>Welcome, {{ username.capitalize() }}</h3>
+            </div>
+            <div class="stats-summary">
+                <div class="stat-card">
+                    <span class="stat-number">{{ uploads|length }}</span>
+                    <span class="stat-label">Total Uploads</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">{{ analyzed_count }}</span>
+                    <span class="stat-label">Poses Analyzed</span>
+                </div>
+            </div>
+
+        </div>
+        </div>
+
+        <div class="upload-history">
+            <h2>Your Pose History</h2>
+            <section class="video-gallery" style="display: flex; flex-wrap: wrap; gap: 20px;">
+                {% for video in videos %}
+                <div class="video-card" style="border: 1px solid #ccc; padding: 15px; width: 300px;">
+                    <h3>{{ video['fileName'] }}</h3>
+
+                    <video width="100%" height="200" controls>
+                        <source src="{{ '/' + video['url'] }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <!-- Analyze Button -->
+                    <!-- Analyze Button -->
+                    <form class="analyze-form" action="{{ url_for('video.analyze_video', video_id=video['id']) }}"
+                        method="POST">
+                        <button type="submit" class="analyze-btn">Analyze</button>
+                    </form>
+
+                    <!-- View Details Button -->
+                    {% if video.prediction_id %}
+                    <form action="{{ url_for('video.view_result', prediction_id=video.prediction_id) }}" method="GET">
+                        <button type="submit" class="result-btn">View Details</button>
+                    </form>
+                    {% endif %}
+
+                    <!-- Delete Button -->
+                    <form class="delete-form" data-video-id="{{ video['id'] }}" method="POST"
+                        action="{{ url_for('video.delete_video', video_id=video['id']) }}">
+                        <button type="button" class="delete-btn open-modal-btn">🗑️ Delete</button>
+                    </form>
+
+
+
+
+                </div>
+
+
+                {% else %}
+                <p class="empty-message">You haven't analyzed any poses yet. <a
+                        href="{{ url_for('video.upload_video') }}">Upload
+                        your first pose</a> to get started!</p>
+                {% endfor %}
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Yoga Alignment Guide Logo">
+                <span>YOGA ALIGNMENT GUIDE</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+            </div>
+            <div class="social-links">
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">YouTube</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Yoga Alignment Guide. All rights reserved.</p>
+        </div>
+    </footer>
+    <div id="deleteModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <p>Are you sure you want to delete this video?</p>
+            <div class="modal-actions">
+                <button id="cancelDeleteBtn">Cancel</button>
+                <button id="confirmDeleteBtn">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/uploaded.js') }}"></script>
+
+</body>
+
+</html>
