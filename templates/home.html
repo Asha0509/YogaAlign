@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yoga Alignment Guide</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:wght@400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Yoga Alignment Guide Logo">
+                <span>YOGA ALIGNMENT GUIDE</span>
+            </div>
+            <ul class="nav-links">
+                <li><a class="active" href="#">HOME</a></li>
+                <li><a href="{{ url_for('signup.signup') }}">SIGN UP</a></li>
+                <li><a href="{{ url_for('login.signin') }}">SIGN IN</a></li>
+            </ul>
+            <div class="hamburger">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Align Your Body, Mind & Spirit</h1>
+            <p class="subtitle">Your personalized guide to proper alignment for a safer, deeper practice</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('signup.signup') }}" class="cta-primary">Start Your Journey</a>
+                <a href="#features" class="cta-secondary">Learn More</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="{{ url_for('static', filename='images/yoga-pose.png') }}" alt="Yoga Pose Illustration">
+        </div>
+    </section>
+
+    <section class="mission" id="features">
+        <div class="mission-content">
+            <h2>Our Philosophy</h2>
+            <div class="divider"></div>
+            <p>
+                We believe yoga should be accessible to all bodies. Our alignment-focused approach helps you maximize
+                benefits
+                while minimizing injury risk. Whether you're beginning your journey or deepening your practice, we
+                provide
+                the foundation for mindful movement and growth.
+            </p>
+            <div class="mission-stats">
+                <div class="stat-item">
+                    <span class="stat-number">100+</span>
+                    <span class="stat-label">Alignment Guides</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Access</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">1000+</span>
+                    <span class="stat-label">Happy Yogis</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>What We Offer</h2>
+        <div class="divider"></div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🧘</div>
+                <h3>Pose Library</h3>
+                <p>Detailed alignment instructions for hundreds of poses with modifications for all levels.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Personalized Feedback</h3>
+                <p>Upload photos for personalized alignment suggestions from our certified instructors.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Yoga Alignment Guide Logo">
+                <span>YOGA ALIGNMENT GUIDE</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+            </div>
+            <div class="social-links">
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">YouTube</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Yoga Alignment Guide. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

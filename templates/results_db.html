@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Results | Yoga Alignment Guide</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:wght@400;600&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Yoga Alignment Guide Logo" />
+                <span>YOGA ALIGNMENT GUIDE</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('video.uploaded_videos') }}">UPLOAD NEW</a></li>
+                <li><a href="{{ url_for('logout.logout') }}">LOGOUT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="results-container">
+        <h1>Your {{ prediction.pose_name }} Analysis</h1>
+
+        <div class="results-content">
+            <div class="media-display">
+                {% if prediction.media_type == 'video' %}
+                <video controls autoplay>
+                    <source src="{{ url_for('video.uploaded_file', filename=prediction['video_url']) }}"
+                        type="video/{{ prediction['video_url'].rsplit('.', 1)[-1] }}">
+                    Your browser does not support the video tag.
+                </video>
+
+                {% else %}
+                <img src="{{ url_for('video.uploaded_file', filename=prediction.image_url) }}"
+                    alt="Uploaded Pose Image" />
+                {% endif %}
+            </div>
+
+
+            <div class="analysis-results">
+                <div class="score-display">
+                    <div class="score-circle {{ 'good' if prediction.score >= 70 else 'needs-work' }}">
+                        {{ prediction.score }}%
+                    </div>
+                    <h3>
+                        {% if prediction.is_correct %}
+                        Great Job!
+                        {% else %}
+                        ❌ Pose performed incorrectly, Needs Improvement
+                        {% endif %}
+                    </h3>
+                </div>
+
+                <div class="feedback-section">
+                    <h3>Feedback:</h3>
+                    <ul>
+                        {% for item in prediction.feedback %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <a href="{{ url_for('video.uploaded_videos') }}" class="analyze-again-btn">Analyze Another Pose</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Yoga Alignment Guide Logo" />
+                <span>YOGA ALIGNMENT GUIDE</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Yoga Alignment Guide. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

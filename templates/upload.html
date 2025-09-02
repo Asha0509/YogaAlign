@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Yoga Video</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <style>
+        video {
+            display: none;
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <header>
+            <h1>Upload Your Yoga Session 🎥</h1>
+            <div class="nav-right">
+                <a href="{{ url_for('video.dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('video.uploaded_videos') }}">Uploaded Videos</a>
+                <a href="{{ url_for('video.upload_video') }}" class="active">Upload Video</a>
+                <a href="{{ url_for('logout.logout') }}">Logout</a>
+
+            </div>
+        </header>
+
+        <main>
+            <section class="upload-section">
+                <form action="{{ url_for('video.upload_video') }}" method="POST" enctype="multipart/form-data">
+                    <label for="title">Video Title:</label>
+                    <input type="text" id="title" name="title" required />
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4"
+                        placeholder="Describe your yoga session..."></textarea>
+                    <label for="video">Select Video File:</label>
+                    <input type="file" id="video" name="video" accept="video/*" required
+                        onchange="previewVideo(event)" />
+
+                    <video id="videoPreview" controls></video>
+
+
+
+                    <button type="submit">Upload</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function previewVideo(event) {
+            const fileInput = event.target;
+            const file = fileInput.files[0];
+            const video = document.getElementById('videoPreview');
+
+            if (file && file.type.startsWith('video/')) {
+                const fileURL = URL.createObjectURL(file);
+                video.src = fileURL;
+                video.style.display = 'block';
+            } else {
+                video.style.display = 'none';
+                video.src = '';
+            }
+        }
+    </script>
+</body>
+<script>
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted || window.performance.navigation.type === 2) {
+            window.location.reload();
+        }
+    });
+</script>
+
+
+
+
+</html>
+
+
