@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload | Yoga Alignment Guide</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:wght@400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Yoga Alignment Guide Logo">
+                <span>YOGA ALIGNMENT GUIDE</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">HOME</a></li>
+                <li><a class="active" href="{{ url_for('video.uploaded_videos') }}">PROFILE</a></li>
+                <li><a href="{{ url_for('logout.logout') }}">LOGOUT</a></li>
+            </ul>
+            <div class="hamburger">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="upload-container">
+        <div class="upload-form">
+            <h2>Upload Your Yoga Pose</h2>
+            <div class="divider"></div>
+            <form action="{{ url_for('video.upload_video') }}" method="POST" enctype="multipart/form-data"
+                id="pose-form">
+                <input type="hidden" id="pose-type-hidden" name="pose-type-hidden">
+                <div class="form-group">
+                    <label for="pose-type">Select Pose Type</label>
+                    <select id="pose-type" name="pose-type" class="form-control">
+                        <option value="downward-dog">Downward Dog</option>
+                        <option value="warrior-ii">Warrior II</option>
+                        <option value="tree-pose">Tree Pose</option>
+                        <option value="mountain-pose">Mountain Pose</option>
+                        <option value="other">Other (Auto-detect)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Capture Method</label>
+                    <div class="capture-method">
+                        <button type="button" class="method-btn active" data-method="upload">Upload File</button>
+                        <button type="button" class="method-btn" data-method="camera">Use Camera</button>
+                    </div>
+                </div>
+
+                <!-- File Upload Section -->
+                <div class="form-group upload-section" id="upload-section">
+                    <label for="file">Upload Image or Video</label>
+
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="file" name="file" accept="image/,video/">
+
+                        <label for="file" class="file-upload-label">
+                            <span class="file-upload-button">Choose File</span>
+                            <span class="file-upload-text">No file chosen</span>
+                        </label>
+                        <button type="submit" class="file-upload-button">Upload</button>
+                    </div>
+
+                    <p class="help-text">Supported formats: JPG, PNG, MP4, MOV (Max 50MB)</p>
+                </div>
+
+                <!-- Camera Section -->
+                <!-- Camera Section (updated) -->
+                <div class="form-group camera-section" id="camera-section" style="display: none;">
+                    <div class="camera-preview">
+                        <video id="camera-view" autoplay playsinline></video>
+                        <canvas id="camera-canvas" style="display: none;"></canvas>
+                        <canvas id="pose-canvas" style="position: absolute; top: 0; left: 0;"></canvas>
+                    </div>
+                    <div class="camera-controls">
+                        <button type="button" id="start-camera" class="camera-btn">
+                            Start Camera
+                        </button>
+                        <button type="button" id="toggle-analysis" class="camera-btn" disabled>
+                            Start Analysis
+                        </button>
+                        <button type="button" id="capture-btn" class="camera-btn" disabled>
+                            Capture & Analyze
+                        </button>
+                    </div>
+
+                    <div class="live-feedback" id="live-feedback-container" style="display: none;">
+                        <h3>Live Feedback</h3>
+                        <ul id="live-feedback"></ul>
+                    </div>
+
+                    <input type="hidden" id="camera-data" name="camera-data">
+                </div>
+
+                <!-- Button shown only for Upload Method -->
+                <a href="{{ url_for('video.uploaded_videos') }}" class="auth-button" id="see-videos-btn"
+                    style="display: none;">
+                    See All Videos
+                </a>
+
+
+                <!-- Button shown only for Camera Method -->
+                <button type="submit" id="analyze-pose-btn" class="auth-button" style="display: none;">
+                    Analyze Pose
+                </button>
+            </form>
+        </div>
+
+        <div class="upload-preview">
+            <div class="preview-container">
+                <div class="preview-placeholder">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+                        stroke="#5E8C61" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"></path>
+                        <line x1="16" y1="5" x2="22" y2="5"></line>
+                        <line x1="19" y1="2" x2="19" y2="8"></line>
+                        <circle cx="9" cy="9" r="2"></circle>
+                        <path d="M21 15l-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+                    </svg>
+                    <p>Preview will appear here</p>
+                </div>
+                <div class="preview-content" id="file-preview"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Yoga Alignment Guide Logo">
+                <span>YOGA ALIGNMENT GUIDE</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+            </div>
+            <div class="social-links">
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">YouTube</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Yoga Alignment Guide. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.12.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+
+</body>
+
+</html>
